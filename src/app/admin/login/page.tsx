@@ -2,6 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { AlertCircle, Stethoscope } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -31,55 +36,62 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] flex items-center justify-center">
-      <div className="bg-white rounded-2xl border border-[#E8E4DC] p-8 w-full max-w-sm shadow-sm">
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-[#1A6B4A] rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-xl font-bold">Д</span>
+    <div className="min-h-screen bg-muted flex items-center justify-center p-4">
+      <div className="w-full max-w-sm space-y-6">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <Stethoscope className="h-6 w-6" />
           </div>
-          <h1 className="text-xl font-bold text-[#1C1917]">Панель управления</h1>
-          <p className="text-sm text-[#78716C] mt-1">ДентаМед</p>
+          <h1 className="text-2xl font-bold tracking-tight">ДентаМед</h1>
+          <p className="text-sm text-muted-foreground">Панель управления сайтом</p>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="text-xs font-semibold text-[#78716C] block mb-1.5">EMAIL</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="admin@example.com"
-              className="w-full border border-[#E8E4DC] rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#1A6B4A]"
-              onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            />
-          </div>
-
-          <div>
-            <label className="text-xs font-semibold text-[#78716C] block mb-1.5">ПАРОЛЬ</label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              className="w-full border border-[#E8E4DC] rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#1A6B4A]"
-              onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            />
-          </div>
-
-          {error && (
-            <div className="text-sm text-[#DC2626] bg-[#FEF2F2] border border-[#FECACA] rounded-lg px-4 py-2.5">
-              {error}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Войти в аккаунт</CardTitle>
+            <CardDescription>Введите свои данные для доступа</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="admin@example.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              />
             </div>
-          )}
 
-          <button
-            onClick={handleLogin}
-            disabled={loading || !email || !password}
-            className="w-full bg-[#1A6B4A] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-[#155C3E] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Вход...' : 'Войти'}
-          </button>
-        </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Пароль</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              />
+            </div>
+
+            {error && (
+              <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <Button
+              onClick={handleLogin}
+              disabled={loading || !email || !password}
+              className="w-full"
+            >
+              {loading ? 'Входим...' : 'Войти'}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

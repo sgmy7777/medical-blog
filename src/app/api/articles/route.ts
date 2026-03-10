@@ -67,9 +67,17 @@ export async function POST(req: NextRequest) {
     isPublished,
   } = body
 
-  if (!title || !slug || !content || !authorId || !categoryId) {
-    return NextResponse.json({ error: 'Заполните обязательные поля' }, { status: 400 })
-  }
+  const missing: string[] = []
+if (!title) missing.push('заголовок')
+if (!slug) missing.push('slug')
+if (!content) missing.push('содержание')
+if (!authorId) missing.push('автор')
+if (!categoryId) missing.push('категория')
+
+if (missing.length > 0) {
+  console.error('[POST] Missing fields:', missing)
+  return NextResponse.json({ error: 'Не заполнено: ' + missing.join(', ') }, { status: 400 })
+}
 
   // Проверка уникальности slug
   const existing = await prisma.article.findUnique({ where: { slug } })
